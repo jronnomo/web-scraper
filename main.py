@@ -1,11 +1,12 @@
 import os
+import time
 import dotenv
 import requests
 import selectorlib
+from send_email import send_mail
 
 dotenv.load_dotenv()
-URL = os.getenv("URL")
-URL2 = os.getenv("URL2")
+URL = os.getenv("URL_TOURS")
 
 
 def scrape(url):
@@ -21,10 +22,6 @@ def extract(source):
     return value
 
 
-def send_email():
-    print('Email sent')
-
-
 def read(text):
     with open(text) as file:
         content = file.read()
@@ -37,11 +34,14 @@ def store(text):
 
 
 if __name__ == "__main__":
-    scraped = scrape(URL)
-    extracted = extract(scraped)
-    tours = read('data.txt')
-    print(extracted)
-    if extracted != 'No upcoming tours':
-        if extracted not in tours:
-            store(extracted)
-            send_email()
+    while True:
+        scraped = scrape(URL)
+        extracted = extract(scraped)
+        tours = read('data.txt')
+        print(extracted)
+        if extracted != 'No upcoming tours':
+            if extracted not in tours:
+                store(extracted)
+                send_mail(extracted)
+                print("Email Sent!")
+        time.sleep(2)
