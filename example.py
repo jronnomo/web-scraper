@@ -1,7 +1,7 @@
 import sqlite3
 
 # Establish connection
-connection = sqlite3.connect('data-example.db')
+connection = sqlite3.connect('data.db')
 cursor = connection.cursor()
 
 # Query data with condition
